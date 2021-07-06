@@ -36,6 +36,7 @@
 
 #include "execute_task_solution_capability.h"
 
+#include <moveit/moveit_cpp/moveit_cpp.h>
 #include <moveit/plan_execution/plan_execution.h>
 #include <moveit/trajectory_processing/trajectory_tools.h>
 #include <moveit/kinematic_constraints/utils.h>
@@ -86,7 +87,7 @@ ExecuteTaskSolutionCapability::ExecuteTaskSolutionCapability() : MoveGroupCapabi
 void ExecuteTaskSolutionCapability::initialize() {
 	// configure the action server
 	as_ = rclcpp_action::create_server<moveit_task_constructor_msgs::action::ExecuteTaskSolution>(
-	    context_->node_, "execute_task_solution",
+	    context_->moveit_cpp_->getNode(), "execute_task_solution",
 	    ActionServerType::GoalCallback(std::bind(&ExecuteTaskSolutionCapability::handleNewGoal, this,
 	                                             std::placeholders::_1, std::placeholders::_2)),
 	    ActionServerType::CancelCallback(
